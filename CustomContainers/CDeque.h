@@ -5,7 +5,7 @@
 template<typename T>
 class CDeque
 {
-public:
+private:
 	struct CDequeNode
 	{
 		T value;
@@ -14,7 +14,6 @@ public:
 		CDequeNode() {}
 		CDequeNode(const T& value, CDequeNode* prev = nullptr, CDequeNode* next = nullptr) : value(value), prev(prev), next(next) {}
 	};
-private:
 	CDequeNode root;
 	size_t size = 0;
 public:

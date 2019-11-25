@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="CDeque.cpp" />
     <ClCompile Include="CList.cpp" />
+    <ClCompile Include="CPriorityQueue.cpp" />
     <ClCompile Include="CQueue.cpp" />
     <ClCompile Include="CStack.cpp" />
     <ClCompile Include="CustomContainers.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="CDeque.h" />
     <ClInclude Include="CList.h" />
+    <ClInclude Include="CPriorityQueue.h" />
     <ClInclude Include="CQueue.h" />
     <ClInclude Include="CStack.h" />
   </ItemGroup>

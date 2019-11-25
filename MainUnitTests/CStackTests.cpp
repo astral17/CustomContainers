@@ -41,6 +41,7 @@ namespace CustomContainersTests
 		template<typename T>
 		void EqualToVector(CStack<T> stk, const std::vector<T>& v)
 		{
+			Assert::AreEqual(stk.Size(), v.size());
 			for (const T& x : v)
 			{
 				Assert::AreEqual(stk.Top(), x);

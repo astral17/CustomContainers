@@ -53,6 +53,7 @@ namespace CustomContainersTests
 		template<typename T>
 		void EqualToVector(CDeque<T> stk, const std::vector<T> & v)
 		{
+			Assert::AreEqual(stk.Size(), v.size());
 			for (const T& x : v)
 			{
 				Assert::AreEqual(stk.Front(), x);
@@ -84,6 +85,16 @@ namespace CustomContainersTests
 			d1.Swap(d2);
 			Assert::AreEqual(d1.Size(), (size_t)4);
 			Assert::AreEqual(d2.Size(), (size_t)5);
+			/*
+			{
+				std::stringstream str;
+				str << d1;
+				std::string s1 = str.str();
+				str.clear();
+				str.str("");
+				str << d2;
+				std::string s2 = str.str();
+			}//*/
 			EqualToVector(d1, v2);
 			EqualToVector(d2, v1);
 		}

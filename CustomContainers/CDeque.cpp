@@ -74,6 +74,8 @@ void CDeque<T>::PopBack()
 template<typename T>
 void CDeque<T>::Swap(CDeque<T>& other)
 {
+	std::swap(root.next->prev, other.root.next->prev);
+	std::swap(root.prev->next, other.root.prev->next);
 	std::swap(root, other.root);
 	std::swap(size, other.size);
 }

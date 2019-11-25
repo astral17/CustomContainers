@@ -161,6 +161,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CDequeTests.cpp" />
+    <ClCompile Include="CListTests.cpp" />
+    <ClCompile Include="CPriorityQueueTests.cpp" />
     <ClCompile Include="CStackTests.cpp" />
     <ClCompile Include="MainUnitTests.cpp" />
     <ClCompile Include="pch.cpp">
