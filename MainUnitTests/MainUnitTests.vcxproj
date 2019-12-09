@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBinarySearchTreeTests.cpp" />
     <ClCompile Include="CDequeTests.cpp" />
     <ClCompile Include="CListTests.cpp" />
     <ClCompile Include="CPriorityQueueTests.cpp" />
