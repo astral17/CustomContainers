@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AList.cpp" />
     <ClCompile Include="CBinarySearchTree.cpp" />
     <ClCompile Include="CDeque.cpp" />
     <ClCompile Include="CList.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="CustomContainers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AList.h" />
     <ClInclude Include="CBinarySearchTree.h" />
     <ClInclude Include="CDeque.h" />
     <ClInclude Include="CList.h" />

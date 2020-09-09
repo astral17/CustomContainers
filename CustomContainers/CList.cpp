@@ -1,10 +1,8 @@
 #include "CList.h"
 
-#include <initializer_list>
-#include <algorithm>
-
 #ifndef _CLIST_HEADER_GUARD
 #define _CLIST_HEADER_GUARD
+#include <algorithm>
 
 template<typename T>
 inline CList<T>::CList(const CList<T>& other) : CList()

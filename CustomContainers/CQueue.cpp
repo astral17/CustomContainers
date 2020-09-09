@@ -2,6 +2,7 @@
 
 #ifndef _CQUEUE_HEADER_GUARD
 #define _CQUEUE_HEADER_GUARD
+#include <algorithm>
 
 template<typename T>
 inline CQueue<T>::CQueue(const CQueue<T>& other)

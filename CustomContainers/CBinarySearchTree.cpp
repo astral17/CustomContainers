@@ -73,6 +73,17 @@ typename CBinarySearchTree<T, Compare>::Node* CBinarySearchTree<T, Compare>::Fin
 }
 
 template<typename T, typename Compare>
+bool CBinarySearchTree<T, Compare>::Erase(const T& value)
+{
+	Node* cur = Find(value);
+	if (!cur)
+		return false;
+	if (!cur->left)
+
+	return true;
+}
+
+template<typename T, typename Compare>
 void CBinarySearchTree<T, Compare>::Swap(CBinarySearchTree& other)
 {
 	std::swap(root, other.root);

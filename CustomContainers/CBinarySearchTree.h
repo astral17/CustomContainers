@@ -1,6 +1,6 @@
 #pragma once
-#include <functional>
 #include <initializer_list>
+#include <functional>
 
 template <typename T>
 struct CBinarySearchTreeNode

@@ -1,8 +1,8 @@
 #include "CStack.h"
-#include <algorithm>
 
 #ifndef _CSTACK_HEADER_GUARD
 #define _CSTACK_HEADER_GUARD
+#include <algorithm>
 
 template<typename T>
 CStack<T>::CStack(const CStack<T>& other) : first(nullptr)

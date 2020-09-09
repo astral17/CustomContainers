@@ -1,8 +1,8 @@
 #include "CPriorityQueue.h"
-#include <algorithm>
 
 #ifndef _CPRIORITY_QUEUE_HEADER_GUARD
 #define _CPRIORITY_QUEUE_HEADER_GUARD
+#include <algorithm>
 
 template<typename T>
 inline CPriorityQueue<T>::CPriorityQueue(const CPriorityQueue<T>& other) : sorted(other.sorted)
