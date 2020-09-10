@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AListTests.cpp" />
+    <ClCompile Include="AStackTests.cpp" />
     <ClCompile Include="CBinarySearchTreeTests.cpp" />
     <ClCompile Include="CDequeTests.cpp" />
     <ClCompile Include="CListTests.cpp" />

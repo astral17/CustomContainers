@@ -1,6 +1,5 @@
 #pragma once
 #include <initializer_list>
-#include <cstddef>
 
 template<typename T>
 class AList
@@ -11,7 +10,7 @@ public:
 		T value;
 		size_t prev = -1;
 		size_t next = -1;
-		AListNode() {}
+		//AListNode() {}
 		//		AListNode(const T& value, size_t prev = -1, size_t next = -1) : value(value), prev(prev), next(next) {}
 		void Init(const T& value, size_t prev = -1, size_t next = -1)
 		{
@@ -21,69 +20,21 @@ public:
 		}
 	};
 
-	struct AListIterator
-	{
-		size_t cur;
-		const AList& list;
-		AListIterator() {}
-		AListIterator(const AListIterator& other) : list(other.list), cur(other.cur) {}
-		AListIterator(const AList<T>& list) : list(list), cur(list.begin()) {}
-		AListIterator(const AList<T>& list, size_t cur) : list(list), cur(cur) {}
-		AListNode& operator*()
-		{
-			return list.arr[cur];
-		}
-		AListNode* operator->()
-		{
-			return &list.arr[cur];
-		}
-		AListIterator& operator++()
-		{
-			cur = list.arr[cur].next;
-			return *this;
-		}
-		AListIterator& operator++(int)
-		{
-			AListIterator it(*this);
-			operator++();
-			return it;
-		}
-		AListIterator& operator--()
-		{
-			cur = list.arr[cur].prev;
-			return *this;
-		}
-		AListIterator& operator--(int)
-		{
-			AListIterator it(*this);
-			operator--();
-			return it;
-		}
-		bool operator==(const AListIterator& other) const
-		{
-			return &list == &other.list && cur == other.cur;
-		}
-		bool operator!=(const AListIterator& other) const
-		{
-			return !operator==(other);
-		}
-	};
-
 	struct AListConstIterator
 	{
 		size_t cur;
 		const AList& list;
-		AListConstIterator() {}
+		//AListConstIterator() {}
 		AListConstIterator(const AListConstIterator& other) : list(other.list), cur(other.cur) {}
-		AListConstIterator(const AList<T>& list) : list(list), cur(list.begin()) {}
+		AListConstIterator(const AList<T>& list) : list(list), cur(list.arr[list.root].next) {}
 		AListConstIterator(const AList<T>& list, size_t cur) : list(list), cur(cur) {}
-		const AListNode& operator*() const
+		const T& operator*() const
 		{
-			return list.arr[cur];
+			return list.arr[cur].value;
 		}
-		const AListNode* operator->() const
+		const T* operator->() const
 		{
-			return &list.arr[cur];
+			return &list.arr[cur].value;
 		}
 		AListConstIterator& operator++()
 		{
@@ -116,6 +67,60 @@ public:
 			return !operator==(other);
 		}
 	};
+
+	struct AListIterator
+	{
+		size_t cur;
+		const AList& list;
+		//AListIterator() {}
+		AListIterator(const AListIterator& other) : list(other.list), cur(other.cur) {}
+		AListIterator(const AList<T>& list) : list(list), cur(list.arr[list.root].next) {}
+		AListIterator(const AList<T>& list, size_t cur) : list(list), cur(cur) {}
+		T& operator*() const
+		{
+			return list.arr[cur].value;
+		}
+		T* operator->() const
+		{
+			return &list.arr[cur].value;
+		}
+		AListIterator& operator++()
+		{
+			cur = list.arr[cur].next;
+			return *this;
+		}
+		AListIterator& operator++(int)
+		{
+			AListIterator it(*this);
+			operator++();
+			return it;
+		}
+		AListIterator& operator--()
+		{
+			cur = list.arr[cur].prev;
+			return *this;
+		}
+		AListIterator& operator--(int)
+		{
+			AListIterator it(*this);
+			operator--();
+			return it;
+		}
+		bool operator==(const AListIterator& other) const
+		{
+			return &list == &other.list && cur == other.cur;
+		}
+		bool operator!=(const AListIterator& other) const
+		{
+			return !operator==(other);
+		}
+		operator AListConstIterator() const
+		{
+			return AListConstIterator(list, cur);
+		}
+	};
+	typedef AListIterator iterator;
+	typedef AListConstIterator const_iterator;
 	//	friend struct AListIterator;
 private:
 	AListNode* arr;
@@ -147,7 +152,7 @@ public:
 	}
 	AList() : AList(16) {}
 	AList(const AList<T>& other);
-	AList(AList<T>&& other);
+	AList(AList<T>&& other) noexcept;
 	AList(std::initializer_list<T> IList);
 	~AList();
 	void InsertAfter(AListIterator it, const T& value);
@@ -166,6 +171,14 @@ public:
 	AListIterator end()
 	{
 		return AListIterator(*this, root);
+	}
+	AListConstIterator begin() const
+	{
+		return AListConstIterator(*this, arr[root].next);
+	}
+	AListConstIterator end() const
+	{
+		return AListConstIterator(*this, root);
 	}
 	AListConstIterator cbegin() const
 	{
@@ -204,6 +217,12 @@ public:
 	{
 		return size == maxSize - 1;
 	}
+	AList<T>& operator+=(const AList<T>& other);
+	AList<T> operator+(const AList<T>& other) const;
+	AList<T>& operator=(const AList<T>& other);
+	AList<T>& operator=(AList<T>&& other);
+	bool operator==(const AList<T>& other) const;
+	bool operator!=(const AList<T>& other) const;
 };
 
 #include "AList.cpp"
