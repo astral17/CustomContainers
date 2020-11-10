@@ -217,12 +217,8 @@ public:
 	{
 		return size == maxSize - 1;
 	}
-	AList<T>& operator+=(const AList<T>& other);
-	AList<T> operator+(const AList<T>& other) const;
 	AList<T>& operator=(const AList<T>& other);
-	AList<T>& operator=(AList<T>&& other);
-	bool operator==(const AList<T>& other) const;
-	bool operator!=(const AList<T>& other) const;
+	AList<T>& operator=(AList<T>&& other) noexcept;
 };
 
 #include "AList.cpp"

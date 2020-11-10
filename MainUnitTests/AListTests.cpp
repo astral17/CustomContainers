@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "CppUnitTest.h"
 #include <vector>
 #include <sstream>
@@ -119,27 +118,6 @@ namespace CustomContainersTests
 				sum += x;
 			Assert::AreEqual(9.1 + 3.2 + 8.4, sum);
 			EqualToVector(l, v);
-		}
-		TEST_METHOD(CompareTest1)
-		{
-			AList<std::string> l{ "hello", "to", "world" };
-			AList<std::string> l2{ "hello", "to" };
-			Assert::IsFalse(l == l2);
-			l2.PushBack("world");
-			Assert::IsTrue(l == l2);
-			l2.PushBack("world");
-			Assert::IsTrue(l != l2);
-		}
-		TEST_METHOD(ConcatTest1)
-		{
-			AList<double> l{ 8, 1.1, 9, 6.3 };
-			AList<double> l2{ 4.11, 3.7 };
-			std::vector<double> v{ 8, 1.1, 9, 6.3, 4.11, 3.7 };
-			AList<double> l3 = l + l2;
-			Assert::IsTrue((l += l2) == l3);
-			EqualToVector(l, v);
-			l += {8};
-			Assert::IsFalse(l == l3);
 		}
 		TEST_METHOD(AssignTest1)
 		{

@@ -55,7 +55,7 @@ void AStack<T>::Resize(size_t newSize)
 {
 	newSize = std::max(newSize, size);
 	T* newArr = new T[newSize];
-	std::copy(arr, arr + maxSize, newArr);
+	std::move(arr, arr + maxSize, newArr);
 	delete[] arr;
 	arr = newArr;
 	maxSize = newSize;
@@ -67,6 +67,27 @@ void AStack<T>::Swap(AStack<T>& other)
 	std::swap(this->arr, other.arr);
 	std::swap(this->size, other.size);
 	std::swap(this->maxSize, other.maxSize);
+}
+
+template<typename T>
+AStack<T>& AStack<T>::operator=(const AStack<T>& other)
+{
+	if (this == &other)
+		return *this;
+	Clear();
+	for (auto& x : other)
+		Push(x);
+	return *this;
+}
+
+template<typename T>
+AStack<T>& AStack<T>::operator=(AStack<T>&& other) noexcept
+{
+	if (this == &other)
+		return *this;
+	Clear();
+	Swap(other);
+	return *this;
 }
 
 #endif

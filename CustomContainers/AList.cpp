@@ -46,7 +46,7 @@ void AList<T>::Resize(size_t newSize)
 {
 	newSize = std::max(newSize, size);
 	AListNode* newArr = new AListNode[newSize];
-	std::copy(arr, arr + maxSize, newArr);
+	std::move(arr, arr + maxSize, newArr);
 	delete[] arr;
 	arr = newArr;
 	for (size_t i = maxSize; i < newSize; ++i)
@@ -137,62 +137,24 @@ void AList<T>::Swap(AList<T>& other)
 }
 
 template<typename T>
-AList<T> AList<T>::operator+(const AList<T>& other) const
-{
-	AList<T> list;
-	for (const T& x : *this)
-		list.PushBack(x);
-	for (const T& x : other)
-		list.PushBack(x);
-	return list;
-}
-
-template<typename T>
-AList<T>& AList<T>::operator+=(const AList<T>& other)
-{
-	for (const T& x : other)
-		PushBack(x);
-	return *this;
-}
-
-template<typename T>
 AList<T>& AList<T>::operator=(const AList<T>& other)
 {
 	if (this == &other)
 		return *this;
 	Clear();
-	for (auto x : other)
+	for (auto& x : other)
 		PushBack(x);
 	return *this;
 }
 
 template<typename T>
-AList<T>& AList<T>::operator=(AList<T>&& other)
+AList<T>& AList<T>::operator=(AList<T>&& other) noexcept
 {
 	if (this == &other)
 		return *this;
 	Clear();
 	Swap(other);
 	return *this;
-}
-
-template<typename T>
-bool AList<T>::operator==(const AList<T>& other) const
-{
-	if (this == &other)
-		return true;
-	if (size != other.size)
-		return false;
-	for (auto it = cbegin(), it2 = other.cbegin(); it != cend(); ++it, ++it2)
-		if (*it != *it2)
-			return false;
-	return true;
-}
-
-template<typename T>
-bool AList<T>::operator!=(const AList<T>& other) const
-{
-	return !operator==(other);
 }
 
 #endif

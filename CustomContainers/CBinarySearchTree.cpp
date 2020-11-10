@@ -75,10 +75,45 @@ typename CBinarySearchTree<T, Compare>::Node* CBinarySearchTree<T, Compare>::Fin
 template<typename T, typename Compare>
 bool CBinarySearchTree<T, Compare>::Erase(const T& value)
 {
-	Node* cur = Find(value);
+	Node** prev = &root;
+	Node* cur = root;
+	while (cur && cur->value != value)
+	{
+		if (value < cur->value)
+		{
+			prev = &cur->left;
+			cur = cur->left;
+		}
+		else
+		{
+			prev = &cur->right;
+			cur = cur->right;
+		}
+	}
 	if (!cur)
 		return false;
 	if (!cur->left)
+	{
+		prev = cur->right;
+		delete cur;
+	}
+	else if (!cur->right)
+	{
+		prev = cur->left;
+		delete cur;
+	}
+	else
+	{
+		Node* mi = cur;
+		while (mi->left)
+		{
+			prev = &mi->left;
+			mi = mi->left;
+		}
+		cur->value = mi->value;
+		prev = mi->right;
+		delete mi;
+	}
 
 	return true;
 }

@@ -100,6 +100,8 @@ public:
 			return !operator==(other);
 		}
 	};
+	typedef AStackIterator iterator;
+	typedef AStackConstIterator const_iterator;
 private:
 	//struct AStackNode
 	//{
@@ -160,6 +162,8 @@ public:
 	{
 		return size == 0;
 	}
+	AStack<T>& operator=(const AStack<T>& other);
+	AStack<T>& operator=(AStack<T>&& other) noexcept;
 };
 
 #include "AStack.cpp"
