@@ -10,7 +10,7 @@ struct CBinarySearchTreeNode
 	CBinarySearchTreeNode(const T& value, CBinarySearchTreeNode* left = nullptr, CBinarySearchTreeNode* right = nullptr) : value(value), left(left), right(right){}
 };
 
-template <typename T, typename Compare = std::less<T>>
+template <typename T>
 class CBinarySearchTree
 {
 public:
@@ -24,15 +24,22 @@ public:
 	Node* Find(const T& value) const;
 	bool Erase(const T& value);
 	void Swap(CBinarySearchTree& other);
-	const Node* CRoot() const
-	{
-		return root;
-	}
+	template<typename F>
+	void PreOrder(F func) const;
+	template<typename F>
+	void InOrder(F func) const;
+	template<typename F>
+	void PostOrder(F func) const;
 private:
-	Node* RecursiveCopy(Node* node);
+	template<typename F>
+	void PreOrder(Node* node, F func) const;
+	template<typename F>
+	void InOrder(Node* node, F func) const;
+	template<typename F>
+	void PostOrder(Node* node, F func) const;
+	Node* RecursiveCopy(Node* node) const;
 	void RecursiveDestroy(Node* node);
 	Node* root = nullptr;
-	//Compare less = Compare();
 };
 
 #include "CBinarySearchTree.cpp"

@@ -3,31 +3,31 @@
 #ifndef _CBINARY_SEARCH_TREE_HEADER_GUARD
 #define _CBINARY_SEARCH_TREE_HEADER_GUARD
 
-template<typename T, typename Compare>
-CBinarySearchTree<T, Compare>::~CBinarySearchTree()
+template<typename T>
+CBinarySearchTree<T>::~CBinarySearchTree()
 {
 	RecursiveDestroy(root);
 }
 
-template<typename T, typename Compare>
-CBinarySearchTree<T, Compare>::CBinarySearchTree(const CBinarySearchTree& other)
+template<typename T>
+CBinarySearchTree<T>::CBinarySearchTree(const CBinarySearchTree& other)
 {
 	/*
 	RecursiveDestroy(root);
 	root = RecursiveCopy(other.root);*/
-	CBinarySearchTree<T, Compare> tmp;
+	CBinarySearchTree<T> tmp;
 	tmp.root = RecursiveCopy(other.root);
 	Swap(tmp);
 }
 
-template<typename T, typename Compare>
-CBinarySearchTree<T, Compare>::CBinarySearchTree(CBinarySearchTree&& other)
+template<typename T>
+CBinarySearchTree<T>::CBinarySearchTree(CBinarySearchTree&& other)
 {
 	Swap(other);
 }
 
-template<typename T, typename Compare>
-CBinarySearchTree<T, Compare>::CBinarySearchTree(std::initializer_list<T> IList)
+template<typename T>
+CBinarySearchTree<T>::CBinarySearchTree(std::initializer_list<T> IList)
 {
 	for (const T& value : IList)
 	{
@@ -35,29 +35,24 @@ CBinarySearchTree<T, Compare>::CBinarySearchTree(std::initializer_list<T> IList)
 	}
 }
 
-template<typename T, typename Compare>
-inline void CBinarySearchTree<T, Compare>::Insert(const T& value)
+template<typename T>
+inline void CBinarySearchTree<T>::Insert(const T& value)
 {
 	Node* cur = root;
 	Node** from = &root;
 	while (cur)
 	{
 		if (value < cur->value)
-		{
 			from = &cur->left;
-			cur = cur->left;
-		}
 		else
-		{
 			from = &cur->right;
-			cur = cur->right;
-		}
+		cur = *from;
 	}
 	*from = new Node(value);
 }
 
-template<typename T, typename Compare>
-typename CBinarySearchTree<T, Compare>::Node* CBinarySearchTree<T, Compare>::Find(const T& value) const
+template<typename T>
+typename CBinarySearchTree<T>::Node* CBinarySearchTree<T>::Find(const T& value) const
 {
 	Node* cur = root;
 	while (cur)
@@ -72,68 +67,125 @@ typename CBinarySearchTree<T, Compare>::Node* CBinarySearchTree<T, Compare>::Fin
 	return nullptr;
 }
 
-template<typename T, typename Compare>
-bool CBinarySearchTree<T, Compare>::Erase(const T& value)
+template<typename T>
+bool CBinarySearchTree<T>::Erase(const T& value)
 {
-	Node** prev = &root;
 	Node* cur = root;
+	Node** from = &root;
 	while (cur && cur->value != value)
 	{
 		if (value < cur->value)
-		{
-			prev = &cur->left;
-			cur = cur->left;
-		}
+			from = &cur->left;
 		else
-		{
-			prev = &cur->right;
-			cur = cur->right;
-		}
+			from = &cur->right;
+		cur = *from;
 	}
 	if (!cur)
 		return false;
 	if (!cur->left)
 	{
-		prev = cur->right;
+		*from = cur->right;
 		delete cur;
 	}
 	else if (!cur->right)
 	{
-		prev = cur->left;
+		*from = cur->left;
 		delete cur;
 	}
 	else
 	{
-		Node* mi = cur;
+		Node** miFrom = &cur->right, * mi = cur->right;
 		while (mi->left)
 		{
-			prev = &mi->left;
-			mi = mi->left;
+			miFrom = &mi->left;
+			mi = *miFrom;
 		}
-		cur->value = mi->value;
-		prev = mi->right;
-		delete mi;
+		*miFrom = mi->right;
+		// TODO: for simple types better move value then move node
+		//cur->value = mi->value;
+		//delete mi;
+		mi->left = cur->left;
+		mi->right = cur->right;
+		*from = mi;
+		delete cur;
 	}
 
 	return true;
 }
 
-template<typename T, typename Compare>
-void CBinarySearchTree<T, Compare>::Swap(CBinarySearchTree& other)
+template<typename T>
+void CBinarySearchTree<T>::Swap(CBinarySearchTree& other)
 {
 	std::swap(root, other.root);
 }
 
-template<typename T, typename Compare>
-typename CBinarySearchTree<T, Compare>::Node* CBinarySearchTree<T, Compare>::RecursiveCopy(Node* node)
+template<typename T>
+template<typename F>
+inline void CBinarySearchTree<T>::PreOrder(F func) const
+{
+	PreOrder(root, func);
+}
+
+template<typename T>
+template<typename F>
+inline void CBinarySearchTree<T>::InOrder(F func) const
+{
+	InOrder(root, func);
+}
+
+template<typename T>
+template<typename F>
+inline void CBinarySearchTree<T>::PostOrder(F func) const
+{
+	PostOrder(root, func);
+}
+
+template<typename T>
+template<typename F>
+void CBinarySearchTree<T>::PreOrder(Node* node, F func) const
+{
+	if (node)
+	{
+		func(node->value);
+		PreOrder(node->left, func);
+		PreOrder(node->right, func);
+	}
+}
+
+template<typename T>
+template<typename F>
+void CBinarySearchTree<T>::InOrder(Node* node, F func) const
+{
+	if (node)
+	{
+		InOrder(node->left, func);
+		func(node->value);
+		InOrder(node->right, func);
+	}
+}
+
+template<typename T>
+template<typename F>
+void CBinarySearchTree<T>::PostOrder(Node* node, F func) const
+{
+	if (node)
+	{
+		PostOrder(node->left, func);
+		PostOrder(node->right, func);
+		func(node->value);
+	}
+}
+
+template<typename T>
+typename CBinarySearchTree<T>::Node* CBinarySearchTree<T>::RecursiveCopy(Node* node) const
 {
 	if (node == nullptr)
 		return nullptr;
 	return new Node(node->value, RecursiveCopy(node->left), RecursiveCopy(node->right));
 }
 
-template<typename T, typename Compare>
-void CBinarySearchTree<T, Compare>::RecursiveDestroy(Node* node)
+template<typename T>
+void CBinarySearchTree<T>::RecursiveDestroy(Node* node)
 {
 	if (node)
 	{
